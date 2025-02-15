@@ -14,7 +14,7 @@ public class RegistrationDAO {
     }
     
     public boolean create(int studentid, int termId, int crn) {
-        System.out.println("" + studentid +", "+ termId +", " + crn);
+        //System.out.println("" + studentid +", "+ termId +", " + crn);
         boolean result = false;
         
         PreparedStatement ps = null;
@@ -34,7 +34,7 @@ public class RegistrationDAO {
                 
                 // Execute the update and check if the insertion was successful
                 result = ps.executeUpdate()>0;
-                System.out.println(result);
+                //System.out.println(result);
                 }
             } 
         catch (Exception e) {e.printStackTrace();}
