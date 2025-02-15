@@ -21,6 +21,7 @@ public final class DAOFactory {
         this.password = properties.getProperty(PROPERTY_PASSWORD);
         
         try {
+            
             conn = DriverManager.getConnection(url, username, password);
         }
         catch (Exception e) {
@@ -52,7 +53,8 @@ public final class DAOFactory {
     }
     
     public SectionDAO getSectionDAO() {
-        return new SectionDAO(this);
+        return 
+                new SectionDAO(this);
     }
     
     public StudentDAO getStudentDAO() {

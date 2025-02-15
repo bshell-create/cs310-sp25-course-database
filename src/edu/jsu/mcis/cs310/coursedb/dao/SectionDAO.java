@@ -1,51 +1,67 @@
 package edu.jsu.mcis.cs310.coursedb.dao;
 
+import com.github.cliftonlabs.json_simple.JsonArray;
+import com.github.cliftonlabs.json_simple.JsonObject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SectionDAO {
-    
-    private static final String QUERY_FIND = "SELECT * FROM section WHERE termid = ? AND subjectid = ? AND num = ? ORDER BY crn";
-    
-    private final DAOFactory daoFactory;
-    
-    SectionDAO(DAOFactory daoFactory) {
-        this.daoFactory = daoFactory;
+
+    public SectionDAO(DAOFactory aThis) {
     }
-    
-    public String find(int termid, String subjectid, String num) {
-        
-        String result = "[]";
+    private DAOFactory daoFactory;
+
+    public String find(String subjectid, String courseNumber, int termId) {
+        String jsonResult = "";
+        JsonArray sectionArray = new JsonArray();
         
         PreparedStatement ps = null;
         ResultSet rs = null;
-        ResultSetMetaData rsmd = null;
-        
+
         try {
-            
             Connection conn = daoFactory.getConnection();
+            String sql = "SELECT * FROM section WHERE subjectid = ? AND num = ? AND termid = ? ORDER BY crn";
             
             if (conn.isValid(0)) {
                 
-                // INSERT YOUR CODE HERE
+                ps = conn.prepareStatement(sql);
+                ps.setString(1, subjectid);
+                ps.setString(2, courseNumber);
+                ps.setInt(3, termId);
+                rs = ps.executeQuery();
+                   
+                    while (rs.next()) {
+                    JsonObject sectionObject = new JsonObject();
+                    
+                        sectionObject.put("Subject ID",String.valueOf(subjectid));
+                    
+                        sectionObject.put("Course_Num",String.valueOf(courseNumber)); 
+                        
+                        sectionObject.put("TID",String.valueOf(termId)); 
+                    }
+                }
+                        
+        }catch (Exception e) {e.printStackTrace();
+                        
+                       
                 
-            }
-            
+                jsonResult = sectionArray.toString();
         }
-        
-        catch (Exception e) { e.printStackTrace(); }
-        
-        finally {
-            
-            if (rs != null) { try { rs.close(); } catch (Exception e) { e.printStackTrace(); } }
-            if (ps != null) { try { ps.close(); } catch (Exception e) { e.printStackTrace(); } }
-            
-        }
-        
-        return result;
-        
+        return jsonResult;
     }
-    
 }
+
+    
+
+
+            
+
+        
+    
+
+    
+
+

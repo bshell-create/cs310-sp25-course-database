@@ -21,8 +21,8 @@ public class StudentDAO {
         try {
             
             Connection conn = daoFactory.getConnection();
+             
         
-            
             PreparedStatement pstmt = conn.prepareStatement(QUERY_FIND);
             pstmt.setString(1, username);
             
